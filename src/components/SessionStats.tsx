@@ -8,29 +8,29 @@ interface SessionStatsProps {
 
 export function SessionStats({ stats }: SessionStatsProps): React.ReactElement {
   return (
-    <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={3}>
+    <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={6} sm={3}>
           <StatsBox
             title="Total Drinks"
             value={stats.totalDrinks.toString()}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={3}>
           <StatsBox
-            title="Time Elapsed"
+            title="Time"
             value={formatSeconds(stats.timeElapsed)}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={3}>
           <StatsBox
-            title="Drinks/Hour"
+            title="Per Hour"
             value={stats.drinksPerHour.toFixed(1)}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={3}>
           <StatsBox
-            title="Current Buzz"
+            title="Buzz"
             value={`${stats.currentBuzzLevel}/10`}
           />
         </Grid>
@@ -46,11 +46,11 @@ interface StatsBoxProps {
 
 function StatsBox({ title, value }: StatsBoxProps): React.ReactElement {
   return (
-    <Box textAlign="center">
-      <Typography variant="h6" color="text.secondary" gutterBottom>
+    <Box textAlign="center" sx={{ p: 1 }}>
+      <Typography variant="body2" color="text.secondary" gutterBottom>
         {title}
       </Typography>
-      <Typography variant="h4">
+      <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
         {value}
       </Typography>
     </Box>
@@ -62,5 +62,11 @@ function formatSeconds(seconds: number): string {
   const minutes = Math.floor((seconds % 3600) / 60);
   const remainingSeconds = seconds % 60;
   
-  return `${hours}h ${minutes}m ${remainingSeconds}s`;
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+  if (minutes > 0) {
+    return `${minutes}m ${remainingSeconds}s`;
+  }
+  return `${remainingSeconds}s`;
 } 
