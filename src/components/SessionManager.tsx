@@ -17,7 +17,7 @@ import { SessionStats as StatsDisplay } from './SessionStats';
 import { DrinksTable } from './DrinksTable';
 import { SessionHeader } from './SessionHeader';
 import { SessionSummary } from './SessionSummary';
-import type { DrinkEntry, DrinkSession, SessionStats } from '../types';
+import type { DrinkEntry, DrinkSession } from '../types';
 import { saveSession } from '../utils/sessionUtils';
 
 interface SessionManagerProps {
@@ -34,7 +34,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
   const [drinks, setDrinks] = useState<DrinkEntry[]>([]);
   const [sessionStartTime] = useState<Date>(new Date());
   const [localSession, setLocalSession] = useState(initialSession);
-  const [stats, setStats] = useState<SessionStats>({
+  const [stats, setStats] = useState({
     totalDrinks: 0,
     timeElapsed: 0,
     drinksPerHour: 0,

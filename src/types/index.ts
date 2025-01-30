@@ -19,6 +19,8 @@ export interface SessionStats {
   timeElapsed: number; // in seconds
   drinksPerHour: number;
   currentBuzzLevel: number;
+  peakBuzzLevel: number;
+  peakDrinksPerHour: number;
 }
 
 export interface ChartData {

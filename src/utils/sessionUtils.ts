@@ -51,18 +51,20 @@ export const loadActiveSession = (): DrinkSession | null => {
   }
 };
 
-export function calculateStats(session: DrinkSession): SessionStats {
-  const now = new Date();
-  const timeElapsed = Math.floor((now.getTime() - session.startTime.getTime()) / 1000);
-  const drinksPerHour = (session.drinks.length / timeElapsed) * 3600;
+export const calculateSessionStats = (session: DrinkSession): SessionStats => {
+  const timeElapsed = Math.floor((new Date().getTime() - session.startTime.getTime()) / 1000);
+  const elapsedHours = Math.max(1, timeElapsed / 3600);
+  const drinksPerHour = session.drinks.length / elapsedHours;
 
   return {
     totalDrinks: session.drinks.length,
     timeElapsed,
     drinksPerHour,
-    currentBuzzLevel: session.drinks.length > 0 ? session.drinks[session.drinks.length - 1].buzzLevel : 0
+    currentBuzzLevel: session.drinks[session.drinks.length - 1]?.buzzLevel || 0,
+    peakBuzzLevel: Math.max(...session.drinks.map(d => d.buzzLevel), 0),
+    peakDrinksPerHour: drinksPerHour
   };
-}
+};
 
 export const formatDuration = (ms: number): string => {
   const hours = Math.floor(ms / (1000 * 60 * 60));

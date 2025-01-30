@@ -4,6 +4,7 @@ import {
   createSession,
   saveSession,
   loadActiveSession,
+  calculateSessionStats
 } from '../utils/sessionUtils';
 
 export const useSession = () => {
@@ -58,12 +59,7 @@ export const useSession = () => {
     saveSession(updatedSession);
   };
 
-  const stats: SessionStats | null = session ? {
-    totalDrinks: session.drinks.length,
-    timeElapsed: Math.floor((new Date().getTime() - session.startTime.getTime()) / 1000),
-    drinksPerHour: session.drinks.length / ((new Date().getTime() - session.startTime.getTime()) / 3600000),
-    currentBuzzLevel: session.drinks.length > 0 ? session.drinks[session.drinks.length - 1].buzzLevel : 0
-  } : null;
+  const stats: SessionStats | null = session ? calculateSessionStats(session) : null;
 
   return {
     session,
