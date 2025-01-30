@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/analyticsview.tsx","./src/components/buzzslider.tsx","./src/components/drinkentry.tsx","./src/components/sessionmanager.tsx","./src/components/sessionstats.tsx","./src/hooks/usesession.ts","./src/types/index.ts","./src/utils/sessionutils.ts"],"errors":true,"version":"5.7.3"}
