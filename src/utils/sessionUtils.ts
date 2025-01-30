@@ -1,4 +1,5 @@
-import { DrinkEntry, DrinkSession, SessionStats, ChartData } from '../types';
+import { DrinkEntry, DrinkSession, SessionStats } from '../types';
+import { ChartData } from '../types/chart';
 
 const STORAGE_KEY = 'drinkwise_session';
 

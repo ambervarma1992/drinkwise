@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { LocalBar, Stop } from '@mui/icons-material';
 import { DrinkEntryModal } from './DrinkEntryModal';
-import { SessionStats as StatsDisplay } from './SessionStats';
+import { SessionStats } from './SessionStats';
 import { DrinksTable } from './DrinksTable';
 import { SessionHeader } from './SessionHeader';
 import { SessionSummary } from './SessionSummary';
@@ -231,7 +231,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         
         {drinks.length > 0 && (
           <>
-            <StatsDisplay stats={stats} />
+            <SessionStats stats={stats} />
             <DrinksTable drinks={drinks} />
           </>
         )}
@@ -271,7 +271,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         >
           <DialogTitle>Session Summary</DialogTitle>
           <DialogContent>
-            <StatsDisplay stats={stats} />
+            <SessionStats stats={stats} />
             <DrinksTable drinks={drinks} />
           </DialogContent>
           <DialogActions>
