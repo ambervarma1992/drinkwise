@@ -1,3 +1,4 @@
+import React from 'react';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { SessionManager } from './components/SessionManager';
 import { useSession } from './hooks/useSession';
