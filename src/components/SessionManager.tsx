@@ -13,11 +13,11 @@ import {
 } from '@mui/material';
 import { LocalBar, Stop } from '@mui/icons-material';
 import { DrinkEntryModal } from './DrinkEntryModal';
-import { SessionStats } from './SessionStats';
+import { SessionStats as StatsDisplay } from './SessionStats';
 import { DrinksTable } from './DrinksTable';
 import { SessionHeader } from './SessionHeader';
 import { SessionSummary } from './SessionSummary';
-import type { DrinkEntry, DrinkSession, SessionStats as SessionStatsType } from '../types';
+import type { DrinkEntry, DrinkSession, SessionStats } from '../types';
 import { saveSession } from '../utils/sessionUtils';
 
 interface SessionManagerProps {
@@ -34,11 +34,13 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
   const [drinks, setDrinks] = useState<DrinkEntry[]>([]);
   const [sessionStartTime] = useState<Date>(new Date());
   const [localSession, setLocalSession] = useState(initialSession);
-  const [stats, setStats] = useState<SessionStatsType>({
+  const [stats, setStats] = useState<SessionStats>({
     totalDrinks: 0,
     timeElapsed: 0,
     drinksPerHour: 0,
-    currentBuzzLevel: 0
+    currentBuzzLevel: 0,
+    peakBuzzLevel: 0,
+    peakDrinksPerHour: 0
   });
 
   // Update local session when prop changes
@@ -48,7 +50,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
 
   // Update stats every second
   useEffect(() => {
-    if (drinks.length === 0) return;
+    if (drinks.length === 0 || !localSession?.isActive) return;
 
     const interval = setInterval(() => {
       const now = new Date();
@@ -60,12 +62,17 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         totalDrinks: drinks.reduce((sum, drink) => sum + drink.units, 0),
         timeElapsed: Math.floor((now.getTime() - startTime.getTime()) / 1000),
         drinksPerHour: drinks.reduce((sum, drink) => sum + drink.units, 0) / elapsedHours,
-        currentBuzzLevel: lastDrink.buzzLevel
+        currentBuzzLevel: lastDrink.buzzLevel,
+        peakBuzzLevel: Math.max(
+          ...drinks.map(drink => drink.buzzLevel),
+          0
+        ),
+        peakDrinksPerHour: drinks.reduce((sum, drink) => sum + drink.units, 0) / elapsedHours
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [drinks, sessionStartTime]);
+  }, [drinks, sessionStartTime, localSession?.isActive]);
 
   const handleStartSession = () => {
     if (sessionName.trim()) {
@@ -77,7 +84,9 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         totalDrinks: 0,
         timeElapsed: 0,
         drinksPerHour: 0,
-        currentBuzzLevel: 0
+        currentBuzzLevel: 0,
+        peakBuzzLevel: 0,
+        peakDrinksPerHour: 0
       });
     }
   };
@@ -126,7 +135,9 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         totalDrinks: 0,
         timeElapsed: 0,
         drinksPerHour: 0,
-        currentBuzzLevel: 0
+        currentBuzzLevel: 0,
+        peakBuzzLevel: 0,
+        peakDrinksPerHour: 0
       });
       localStorage.removeItem('drinkwise_session');
     }
@@ -187,7 +198,9 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
             totalDrinks: 0,
             timeElapsed: 0,
             drinksPerHour: 0,
-            currentBuzzLevel: 0
+            currentBuzzLevel: 0,
+            peakBuzzLevel: 0,
+            peakDrinksPerHour: 0
           });
         }}
         onGoHome={() => {
@@ -198,7 +211,9 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
             totalDrinks: 0,
             timeElapsed: 0,
             drinksPerHour: 0,
-            currentBuzzLevel: 0
+            currentBuzzLevel: 0,
+            peakBuzzLevel: 0,
+            peakDrinksPerHour: 0
           });
           // Clear localStorage
           localStorage.removeItem('drinkwise_session');
@@ -216,7 +231,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         
         {drinks.length > 0 && (
           <>
-            <SessionStats stats={stats} />
+            <StatsDisplay stats={stats} />
             <DrinksTable drinks={drinks} />
           </>
         )}
@@ -256,7 +271,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         >
           <DialogTitle>Session Summary</DialogTitle>
           <DialogContent>
-            <SessionStats stats={stats} />
+            <StatsDisplay stats={stats} />
             <DrinksTable drinks={drinks} />
           </DialogContent>
           <DialogActions>
