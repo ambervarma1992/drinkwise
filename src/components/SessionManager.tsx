@@ -146,23 +146,69 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
   if (!localSession) {
     return (
       <Container maxWidth="sm">
-        <Paper elevation={3} sx={{ p: 4, mt: 4, textAlign: 'center' }}>
-          <Typography variant="h4" gutterBottom>
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 6, 
+            mt: 4, 
+            textAlign: 'center',
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
+        >
+          <Typography 
+            variant="h3" 
+            gutterBottom 
+            sx={{ 
+              fontWeight: 700,
+              background: 'linear-gradient(45deg, #00bcd4, #ff4081)',
+              backgroundClip: 'text',
+              textFillColor: 'transparent',
+              mb: 3
+            }}
+          >
             Welcome to DrinkWise
           </Typography>
-          <Typography variant="body1" sx={{ mb: 3 }}>
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              mb: 4,
+              color: 'text.secondary',
+              fontWeight: 400
+            }}
+          >
             Track your drinks and stay mindful of your consumption
           </Typography>
           <Button
             variant="contained"
             size="large"
             onClick={() => setIsNamePromptOpen(true)}
+            sx={{
+              px: 4,
+              py: 1.5,
+              fontSize: '1.1rem',
+              background: 'linear-gradient(45deg, #00bcd4, #ff4081)',
+              '&:hover': {
+                background: 'linear-gradient(45deg, #008ba3, #c60055)',
+              }
+            }}
           >
             Start New Session
           </Button>
 
-          <Dialog open={isNamePromptOpen} onClose={() => setIsNamePromptOpen(false)}>
-            <DialogTitle>Name Your Session</DialogTitle>
+          <Dialog 
+            open={isNamePromptOpen} 
+            onClose={() => setIsNamePromptOpen(false)}
+            PaperProps={{
+              sx: {
+                background: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              }
+            }}
+          >
+            <DialogTitle sx={{ pb: 1 }}>Name Your Session</DialogTitle>
             <DialogContent>
               <TextField
                 autoFocus
@@ -171,11 +217,35 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
                 fullWidth
                 value={sessionName}
                 onChange={(e) => setSessionName(e.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.2)',
+                    },
+                  },
+                }}
               />
             </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setIsNamePromptOpen(false)}>Cancel</Button>
-              <Button onClick={handleStartSession} variant="contained">
+            <DialogActions sx={{ px: 3, pb: 3 }}>
+              <Button 
+                onClick={() => setIsNamePromptOpen(false)}
+                sx={{ color: 'text.secondary' }}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleStartSession} 
+                variant="contained"
+                sx={{
+                  background: 'linear-gradient(45deg, #00bcd4, #ff4081)',
+                  '&:hover': {
+                    background: 'linear-gradient(45deg, #008ba3, #c60055)',
+                  }
+                }}
+              >
                 Start Session
               </Button>
             </DialogActions>
@@ -204,7 +274,6 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
           });
         }}
         onGoHome={() => {
-          // Clear local state
           setLocalSession(null);
           setDrinks([]);
           setStats({
@@ -215,9 +284,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
             peakBuzzLevel: 0,
             peakDrinksPerHour: 0
           });
-          // Clear localStorage
           localStorage.removeItem('drinkwise_session');
-          // Then reload
           window.location.reload();
         }}
       />
@@ -230,18 +297,26 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
         <SessionHeader session={localSession} />
         
         {drinks.length > 0 && (
-          <>
+          <Box sx={{ mt: 4 }}>
             <SessionStats stats={stats} />
             <DrinksTable drinks={drinks} />
-          </>
+          </Box>
         )}
 
-        <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+        <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
           <Button
             variant="contained"
             startIcon={<LocalBar />}
             onClick={() => setIsModalOpen(true)}
             fullWidth
+            sx={{
+              py: 1.5,
+              fontSize: '1.1rem',
+              background: 'linear-gradient(45deg, #00bcd4, #ff4081)',
+              '&:hover': {
+                background: 'linear-gradient(45deg, #008ba3, #c60055)',
+              }
+            }}
           >
             Add Drink
           </Button>
@@ -251,6 +326,14 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
               color="error"
               startIcon={<Stop />}
               onClick={handleEndSession}
+              sx={{
+                py: 1.5,
+                fontSize: '1.1rem',
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+                '&:hover': {
+                  borderColor: 'error.main',
+                }
+              }}
             >
               End Session
             </Button>
@@ -268,15 +351,37 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
           onClose={() => setIsSummaryOpen(false)}
           maxWidth="md"
           fullWidth
+          PaperProps={{
+            sx: {
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            }
+          }}
         >
-          <DialogTitle>Session Summary</DialogTitle>
+          <DialogTitle sx={{ pb: 1 }}>Session Summary</DialogTitle>
           <DialogContent>
             <SessionStats stats={stats} />
             <DrinksTable drinks={drinks} />
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsSummaryOpen(false)}>Continue Session</Button>
-            <Button onClick={handleCloseSession} color="error" variant="contained">
+          <DialogActions sx={{ px: 3, pb: 3 }}>
+            <Button 
+              onClick={() => setIsSummaryOpen(false)}
+              sx={{ color: 'text.secondary' }}
+            >
+              Continue Session
+            </Button>
+            <Button 
+              onClick={handleCloseSession} 
+              color="error" 
+              variant="contained"
+              sx={{
+                background: 'linear-gradient(45deg, #ff4081, #c60055)',
+                '&:hover': {
+                  background: 'linear-gradient(45deg, #c60055, #ff4081)',
+                }
+              }}
+            >
               End Session
             </Button>
           </DialogActions>

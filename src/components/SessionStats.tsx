@@ -1,6 +1,7 @@
 import React from 'react';
 import { Paper, Typography, Grid, Box } from '@mui/material';
 import { SessionStats as SessionStatsType } from '../types';
+import { LocalBar, Timer, Speed, EmojiEmotions } from '@mui/icons-material';
 
 interface SessionStatsProps {
   stats: SessionStatsType;
@@ -8,30 +9,47 @@ interface SessionStatsProps {
 
 export function SessionStats({ stats }: SessionStatsProps): React.ReactElement {
   return (
-    <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
-      <Grid container spacing={2}>
+    <Paper 
+      elevation={3} 
+      sx={{ 
+        p: 3, 
+        mb: 3,
+        background: 'rgba(255, 255, 255, 0.05)',
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+      }}
+    >
+      <Grid container spacing={3}>
         <Grid item xs={6} sm={3}>
           <StatsBox
             title="Total Drinks"
             value={stats.totalDrinks.toString()}
+            icon={<LocalBar />}
+            color="#00bcd4"
           />
         </Grid>
         <Grid item xs={6} sm={3}>
           <StatsBox
             title="Time"
             value={formatSeconds(stats.timeElapsed)}
+            icon={<Timer />}
+            color="#ff4081"
           />
         </Grid>
         <Grid item xs={6} sm={3}>
           <StatsBox
             title="Per Hour"
             value={stats.drinksPerHour.toFixed(1)}
+            icon={<Speed />}
+            color="#00bcd4"
           />
         </Grid>
         <Grid item xs={6} sm={3}>
           <StatsBox
             title="Buzz"
             value={`${stats.currentBuzzLevel}/10`}
+            icon={<EmojiEmotions />}
+            color="#ff4081"
           />
         </Grid>
       </Grid>
@@ -42,15 +60,45 @@ export function SessionStats({ stats }: SessionStatsProps): React.ReactElement {
 interface StatsBoxProps {
   title: string;
   value: string;
+  icon: React.ReactNode;
+  color: string;
 }
 
-function StatsBox({ title, value }: StatsBoxProps): React.ReactElement {
+function StatsBox({ title, value, icon, color }: StatsBoxProps): React.ReactElement {
   return (
-    <Box textAlign="center" sx={{ p: 1 }}>
-      <Typography variant="body2" color="text.secondary" gutterBottom>
+    <Box 
+      textAlign="center" 
+      sx={{ 
+        p: 2,
+        borderRadius: 2,
+        background: `linear-gradient(135deg, ${color}15, ${color}05)`,
+        border: `1px solid ${color}30`,
+        transition: 'transform 0.2s',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+        }
+      }}
+    >
+      <Box sx={{ color, mb: 1 }}>
+        {icon}
+      </Box>
+      <Typography 
+        variant="body2" 
+        color="text.secondary" 
+        gutterBottom
+        sx={{ fontWeight: 500 }}
+      >
         {title}
       </Typography>
-      <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
+      <Typography 
+        variant="h5" 
+        sx={{ 
+          fontWeight: 600,
+          background: `linear-gradient(45deg, ${color}, ${color}80)`,
+          backgroundClip: 'text',
+          textFillColor: 'transparent',
+        }}
+      >
         {value}
       </Typography>
     </Box>
