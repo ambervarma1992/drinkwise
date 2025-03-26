@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply h-full bg-gray-900;
+  }
+  
+  body {
+    @apply h-full m-0 bg-gradient-to-br from-gray-900 to-blue-900;
+  }
+  
+  #root {
+    @apply h-full;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900;
+  }
+  
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600;
+  }
+  
+  .card {
+    @apply bg-white/10 backdrop-blur-lg rounded-2xl p-8;
+  }
+} 
