@@ -7,10 +7,10 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables');
+  throw new Error('Missing Supabase URL or key');
 }
 
-const options = {
+export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
@@ -18,14 +18,7 @@ const options = {
   },
   global: {
     headers: {
-      'X-Client-Info': 'drinkwise-backend'
+      'x-my-custom-header': 'drinkwise-application'
     }
   }
-};
-
-// Only disable SSL verification in development
-if (process.env.NODE_ENV === 'development') {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-}
-
-export const supabase = createClient(supabaseUrl, supabaseKey, options); 
+}); 
