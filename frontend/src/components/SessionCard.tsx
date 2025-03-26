@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import type { Session, Drink } from '../lib/supabase';
+import type { Session, Drink } from '../lib/types';
 
 interface SessionCardProps {
   session: Session;
