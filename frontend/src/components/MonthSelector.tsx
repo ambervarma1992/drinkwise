@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 interface MonthSelectorProps {
   selectedMonth: Date;
   onMonthChange: (date: Date) => void;
