@@ -16,7 +16,6 @@ export function SessionCard({ session, drinks, onDelete }: SessionCardProps) {
   const startTime = new Date(session.start_time);
   const endTime = new Date(session.end_time || new Date());
   const duration = (endTime.getTime() - startTime.getTime()) / 1000;
-  const hours = Math.max(1, Math.ceil(duration / 3600));
   
   const totalDrinks = drinks.length;
   const peakBuzzLevel = Math.max(...drinks.map(drink => drink.buzz_level));
