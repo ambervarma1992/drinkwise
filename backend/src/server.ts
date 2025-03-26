@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { supabase } from './lib/supabase';
-import drinksRouter from './routes/drinks';
+import sessionRoutes from './routes/sessions';
+import drinkRoutes from './routes/drinks';
 
 dotenv.config();
 
@@ -13,8 +14,21 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'DrinkWise API is running',
+    version: '1.0.0',
+    endpoints: {
+      sessions: '/api/sessions',
+      drinks: '/api/drinks'
+    }
+  });
+});
+
 // Routes
-app.use('/api/drinks', drinksRouter);
+app.use('/api/sessions', sessionRoutes);
+app.use('/api/drinks', drinkRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
