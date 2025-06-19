@@ -181,8 +181,9 @@ export function Dashboard() {
     const totalUnits = drinks.reduce((sum, drink) => sum + drink.units, 0);
     const startTime = new Date(session.start_time);
     const now = new Date();
-    const durationHours = (now.getTime() - startTime.getTime()) / (1000 * 60 * 60);
-    const unitsPerHour = totalUnits / (durationHours || 1);
+    const durationSeconds = (now.getTime() - startTime.getTime()) / 1000;
+    const hoursSinceStart = Math.max(1, Math.ceil(durationSeconds / 3600));
+    const unitsPerHour = totalUnits / hoursSinceStart;
     const currentBuzzLevel = drinks.length > 0 ? drinks[drinks.length - 1].buzz_level : 0;
 
     return {

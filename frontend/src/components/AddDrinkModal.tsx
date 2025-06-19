@@ -13,6 +13,7 @@ export function AddDrinkModal({ isOpen, onClose, onAddDrink }: AddDrinkModalProp
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [isShared, setIsShared] = useState(false);
 
   // Filter drinks based on search and category
   const filteredDrinks = useMemo(() => {
@@ -47,7 +48,11 @@ export function AddDrinkModal({ isOpen, onClose, onAddDrink }: AddDrinkModalProp
     }
 
     const finalBuzzLevel = Math.max(0, Math.min(10, Math.round(buzzLevel)));
-    onAddDrink(selectedDrink.units, finalBuzzLevel);
+    let units = selectedDrink.units;
+    if (isShared) {
+      units = units / 2;
+    }
+    onAddDrink(units, finalBuzzLevel);
     onClose();
   };
 
@@ -174,6 +179,17 @@ export function AddDrinkModal({ isOpen, onClose, onAddDrink }: AddDrinkModalProp
                     </span>
                   ))}
                 </div>
+              </div>
+
+              <div className="flex items-center gap-2 mb-3">
+                <input
+                  type="checkbox"
+                  id="shared-drink"
+                  checked={isShared}
+                  onChange={() => setIsShared(!isShared)}
+                  className="accent-purple-500 w-4 h-4"
+                />
+                <label htmlFor="shared-drink" className="text-sm select-none cursor-pointer">Shared drink (halve units)</label>
               </div>
 
               <div className="flex justify-end space-x-4">
