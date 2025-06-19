@@ -193,7 +193,6 @@ export function Session() {
     const startTime = new Date(session.start_time);
     const endTime = session.end_time ? new Date(session.end_time) : new Date();
     const duration = (endTime.getTime() - startTime.getTime()) / 1000;
-    const hours = Math.max(1, Math.ceil(duration / 3600));
     const totalUnits = drinks.reduce((sum, drink) => sum + drink.units, 0);
     const peakDrinkRate = drinks.length > 0 ? Math.max(...drinks.map((_, i) => {
       const timeDiff = (new Date(drinks[i].timestamp).getTime() - startTime.getTime()) / 1000;
@@ -275,7 +274,6 @@ export function Session() {
   const startTime = new Date(session.start_time);
   const now = new Date();
   const duration = (now.getTime() - startTime.getTime()) / 1000;
-  const hours = Math.max(1, Math.ceil(duration / 3600));
   const totalUnits = drinks.reduce((sum, drink) => sum + drink.units, 0);
 
   return (
