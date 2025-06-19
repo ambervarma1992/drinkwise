@@ -18,13 +18,10 @@ interface DrinksTableProps {
 }
 
 export function DrinksTable({ drinks }: DrinksTableProps): React.ReactElement {
-  const calculateDrinksPerHour = (currentDrinkIndex: number): string => {
-    if (currentDrinkIndex === 0) return "0.0";
-    const currentDrink = drinks[currentDrinkIndex];
-    const firstDrink = drinks[0];
-    const hoursDiff = (currentDrink.timestamp.getTime() - firstDrink.timestamp.getTime()) / 3600000;
-    const totalDrinks = drinks.slice(0, currentDrinkIndex).reduce((sum, d) => sum + d.units, 0);
-    return (totalDrinks / Math.max(hoursDiff, 1)).toFixed(1);
+  const calculateDrinksPerHour = (drinkIndex: number): string => {
+    const totalDrinks = drinkIndex + 1;
+    const hoursDiff = (drinks[drinkIndex].timestamp.getTime() - drinks[0].timestamp.getTime()) / (1000 * 60 * 60);
+    return Math.round(totalDrinks / Math.max(hoursDiff, 1)).toString();
   };
 
   return (

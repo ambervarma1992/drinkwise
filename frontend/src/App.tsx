@@ -8,7 +8,6 @@ import { History } from './pages/History';
 import { Session as SessionPage } from './pages/Session';
 import { SessionSummary } from './pages/SessionSummary';
 import { Navigation } from './components/Navigation';
-import './App.css';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);

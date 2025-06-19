@@ -27,6 +27,7 @@ export type Drink = {
   user_id: string;
   units: number;
   buzz_level: number;
+  drink_name?: string;
   timestamp: string;
   created_at: string;
 }; 

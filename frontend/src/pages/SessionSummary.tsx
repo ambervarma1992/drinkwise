@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import type { Session as SessionType, Drink } from '../lib/supabase';
+import { formatTimeElapsed } from '../lib/utils';
 
 export function SessionSummary() {
   const { id } = useParams();
@@ -79,7 +80,13 @@ export function SessionSummary() {
   if (!session || !drinks.length) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-200">Session not found</h2>
+        <h2 className="text-2xl font-bold text-gray-200">No drinks recorded in this session</h2>
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+        >
+          Go to Dashboard
+        </button>
       </div>
     );
   }
@@ -110,11 +117,11 @@ export function SessionSummary() {
         <h2 className="text-2xl font-semibold mb-4">Session Stats</h2>
         <div className="space-y-2">
           <p>Total Drinks: {drinks.length}</p>
-          <p>Time Elapsed: {Math.floor(duration / 60)} minutes, {Math.floor(duration % 60)} seconds</p>
-          <p>Drinks Per Hour: {drinksPerHour.toFixed(1)}</p>
+          <p>Time Elapsed: {formatTimeElapsed(duration)}</p>
+          <p>Drinks Per Hour: {Math.round(drinksPerHour)}</p>
           <p>Final Buzz Level: {finalBuzzLevel}/10</p>
           <p>Peak Buzz Level: {peakBuzzLevel}/10</p>
-          <p>Peak Drink Rate: {peakDrinkRate.toFixed(1)}/hr</p>
+          <p>Peak Drink Rate: {Math.round(peakDrinkRate)}/hr</p>
         </div>
       </div>
 

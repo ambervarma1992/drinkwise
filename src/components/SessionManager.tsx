@@ -74,6 +74,28 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
     return () => clearInterval(interval);
   }, [drinks, sessionStartTime, localSession?.isActive]);
 
+  // Auto-close session after 3 hours of inactivity
+  useEffect(() => {
+    if (drinks.length === 0 || !localSession?.isActive) return;
+
+    const checkInactivity = () => {
+      const lastDrink = drinks[drinks.length - 1];
+      const now = new Date();
+      const timeSinceLastDrink = now.getTime() - lastDrink.timestamp.getTime();
+      const threeHoursInMs = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
+
+      if (timeSinceLastDrink >= threeHoursInMs) {
+        console.log('Session auto-closed due to 3 hours of inactivity');
+        handleEndSession();
+      }
+    };
+
+    // Check every minute for inactivity
+    const inactivityInterval = setInterval(checkInactivity, 60000);
+    
+    return () => clearInterval(inactivityInterval);
+  }, [drinks, localSession?.isActive]);
+
   const handleStartSession = () => {
     if (sessionName.trim()) {
       onStartSession(sessionName.trim());
@@ -141,6 +163,19 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
       });
       localStorage.removeItem('drinkwise_session');
     }
+  };
+
+  const handleResumeSession = () => {
+    if (!localSession) return;
+    
+    // Reactivate the session
+    const reactivatedSession = {
+      ...localSession,
+      endTime: undefined,
+      isActive: true,
+    };
+    setLocalSession(reactivatedSession);
+    saveSession(reactivatedSession);
   };
 
   if (!localSession) {
@@ -260,6 +295,7 @@ export function SessionManager({ session: initialSession, onStartSession, onEndS
       <SessionSummary
         session={localSession}
         stats={stats}
+        onResume={handleResumeSession}
         onStartNew={() => {
           setIsNamePromptOpen(true);
           setLocalSession(null);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Typography, Button, Box, Paper } from '@mui/material';
-import { Home, Add } from '@mui/icons-material';
+import { Home, Add, PlayArrow } from '@mui/icons-material';
 import { DrinkSession, SessionStats } from '../types';
 
 interface SessionSummaryProps {
@@ -8,9 +8,10 @@ interface SessionSummaryProps {
   stats: SessionStats;
   onStartNew: () => void;
   onGoHome: () => void;
+  onResume?: () => void;
 }
 
-export function SessionSummary({ session, stats, onStartNew, onGoHome }: SessionSummaryProps): React.ReactElement {
+export function SessionSummary({ session, stats, onStartNew, onGoHome, onResume }: SessionSummaryProps): React.ReactElement {
   return (
     <Container maxWidth="md">
       <Typography variant="h4" gutterBottom>
@@ -45,12 +46,36 @@ export function SessionSummary({ session, stats, onStartNew, onGoHome }: Session
         </Paper>
       </Box>
 
-      <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
+      <Box sx={{ display: 'flex', gap: 2, mt: 4, flexWrap: 'wrap' }}>
+        {onResume && (
+          <Button
+            variant="contained"
+            startIcon={<PlayArrow />}
+            onClick={onResume}
+            sx={{ 
+              flex: 1,
+              minWidth: '200px',
+              background: 'linear-gradient(45deg, #00bcd4, #2196f3)',
+              '&:hover': {
+                background: 'linear-gradient(45deg, #008ba3, #1976d2)',
+              }
+            }}
+          >
+            RESUME SESSION
+          </Button>
+        )}
         <Button
           variant="contained"
           startIcon={<Add />}
           onClick={onStartNew}
-          sx={{ flex: 1 }}
+          sx={{ 
+            flex: 1,
+            minWidth: '200px',
+            background: 'linear-gradient(45deg, #4caf50, #8bc34a)',
+            '&:hover': {
+              background: 'linear-gradient(45deg, #388e3c, #689f38)',
+            }
+          }}
         >
           START NEW SESSION
         </Button>
@@ -58,7 +83,14 @@ export function SessionSummary({ session, stats, onStartNew, onGoHome }: Session
           variant="outlined"
           startIcon={<Home />}
           onClick={onGoHome}
-          sx={{ flex: 1 }}
+          sx={{ 
+            flex: 1,
+            minWidth: '200px',
+            borderColor: 'rgba(255, 255, 255, 0.1)',
+            '&:hover': {
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+            }
+          }}
         >
           GO TO HOME
         </Button>

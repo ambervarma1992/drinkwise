@@ -39,7 +39,7 @@ export function SessionStats({ stats }: SessionStatsProps): React.ReactElement {
         <Grid item xs={6} sm={3}>
           <StatsBox
             title="Per Hour"
-            value={stats.drinksPerHour.toFixed(1)}
+            value={Math.round(stats.drinksPerHour).toString()}
             icon={<Speed />}
             color="#00bcd4"
           />

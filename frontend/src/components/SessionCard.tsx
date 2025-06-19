@@ -17,14 +17,16 @@ export function SessionCard({ session, drinks, onDelete }: SessionCardProps) {
   const endTime = new Date(session.end_time || new Date());
   const duration = (endTime.getTime() - startTime.getTime()) / 1000;
   
-  const totalDrinks = drinks.length;
+  const totalUnits = drinks.reduce((sum, drink) => sum + drink.units, 0);
   const peakBuzzLevel = Math.max(...drinks.map(drink => drink.buzz_level));
   
-  // Calculate peak drinks per hour
-  const peakDrinkRate = Math.max(...drinks.map((_, i) => {
+  // Calculate peak units per hour
+  const peakUnitsPerHour = Math.max(...drinks.map((_, i) => {
     const timeDiff = (new Date(drinks[i].timestamp).getTime() - startTime.getTime()) / 1000;
     const hoursSinceStart = Math.max(1, Math.ceil(timeDiff / 3600));
-    return (i + 1) / hoursSinceStart;
+    return drinks
+      .slice(0, i + 1)
+      .reduce((sum, drink) => sum + drink.units, 0) / hoursSinceStart;
   }));
 
   async function handleDelete() {
@@ -80,12 +82,12 @@ export function SessionCard({ session, drinks, onDelete }: SessionCardProps) {
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div>
-          <p className="text-gray-400 text-sm">Total Drinks</p>
-          <p className="text-xl font-semibold">{totalDrinks}</p>
+          <p className="text-gray-400 text-sm">Total Units</p>
+          <p className="text-xl font-semibold">{totalUnits.toFixed(1)}</p>
         </div>
         <div>
           <p className="text-gray-400 text-sm">Peak Rate</p>
-          <p className="text-xl font-semibold">{peakDrinkRate.toFixed(1)}/hr</p>
+          <p className="text-xl font-semibold">{peakUnitsPerHour.toFixed(1)}/hr</p>
         </div>
         <div>
           <p className="text-gray-400 text-sm">Peak Buzz</p>

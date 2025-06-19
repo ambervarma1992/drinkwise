@@ -20,6 +20,7 @@ create table if not exists public.drinks (
     user_id uuid references auth.users(id) not null,
     units numeric(4,2) not null check (units > 0),
     buzz_level integer not null check (buzz_level between 0 and 10),
+    drink_name text not null,
     timestamp timestamp with time zone default now() not null,
     created_at timestamp with time zone default now() not null
 );
