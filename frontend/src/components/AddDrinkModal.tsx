@@ -168,7 +168,7 @@ export function AddDrinkModal({ isOpen, onClose, onAddDrink }: AddDrinkModalProp
                   </span>
                 </div>
                 <div className="grid grid-cols-5 gap-1 text-xs text-gray-400">
-                  {buzzLabels.map((label, index) => (
+                  {buzzLabels.map((label) => (
                     <span key={label} className="text-center">
                       {label}
                     </span>

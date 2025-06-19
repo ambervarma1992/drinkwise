@@ -14,9 +14,9 @@ export const drinkCategories: DrinkCategory[] = [
   {
     name: "Beer / Lager / Cider",
     drinks: [
-      { name: "Half pint (284ml) — standard lager (Carlsberg)", volume: "284ml", abv: "3.5%", units: 1.0 },
-      { name: "Pint of lager", volume: "568ml", abv: "4%", units: 2.3 },
-      { name: "Pint of strong beer (e.g. IPA)", volume: "568ml", abv: "5.2%", units: 3.0 },
+      { name: "Half pint (250ml) — standard lager (Carlsberg)", volume: "250ml", abv: "3.5%", units: 1.0 },
+      { name: "Pint of lager", volume: "500ml", abv: "4%", units: 2.3 },
+      { name: "Pint of strong beer (e.g. IPA)", volume: "500ml", abv: "5.2%", units: 3.0 },
       { name: "Bottle of beer (330ml)", volume: "330ml", abv: "5%", units: 1.7 },
       { name: "Can of strong cider (500ml)", volume: "500ml", abv: "7.5%", units: 3.8 }
     ]

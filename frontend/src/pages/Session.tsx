@@ -195,7 +195,6 @@ export function Session() {
     const duration = (endTime.getTime() - startTime.getTime()) / 1000;
     const hours = Math.max(1, Math.ceil(duration / 3600));
     const totalUnits = drinks.reduce((sum, drink) => sum + drink.units, 0);
-    const unitsPerHour = totalUnits / hours;
     const peakDrinkRate = drinks.length > 0 ? Math.max(...drinks.map((_, i) => {
       const timeDiff = (new Date(drinks[i].timestamp).getTime() - startTime.getTime()) / 1000;
       const hoursSinceStart = Math.max(1, Math.ceil(timeDiff / 3600));
@@ -278,7 +277,6 @@ export function Session() {
   const duration = (now.getTime() - startTime.getTime()) / 1000;
   const hours = Math.max(1, Math.ceil(duration / 3600));
   const totalUnits = drinks.reduce((sum, drink) => sum + drink.units, 0);
-  const unitsPerHour = totalUnits / hours;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -318,7 +316,7 @@ export function Session() {
         </div>
         <div className="bg-gray-800 rounded-lg p-4">
           <h3 className="text-gray-400 mb-1">Units/Hour</h3>
-          <p className="text-2xl font-bold">{drinks.length === 0 ? '-' : unitsPerHour.toFixed(1)}</p>
+          <p className="text-2xl font-bold">{drinks.length === 0 ? '-' : (drinks.length > 0 ? drinks[drinks.length - 1].buzz_level : 0)/10}</p>
         </div>
         <div className="bg-gray-800 rounded-lg p-4">
           <h3 className="text-gray-400 mb-1">Buzz Level</h3>
